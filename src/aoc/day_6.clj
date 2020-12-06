@@ -1,31 +1,30 @@
 (ns aoc.day-6
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.set :as set]))
+  (:require [aoc.utils :as utils]
+            [clojure.java.io :as io]
+            [clojure.set :as set]
+            [clojure.string :as str]))
 
-(defn input []
-  (slurp (io/resource "day-6.input")))
-
-(defn split-input [input]
-  (map
-   #(str/split % #"\n")
-   (str/split input #"\n\n")))
+(def filename "day-6.input")
 
 (defn solve []
-  (->> (input)
-       split-input
-       (map str/join)
-       (map set)
-       (map count)
-       (apply +)))
+  (with-open [lines (utils/input-reader filename)]
+    (transduce
+     (comp utils/blank-line-splitting
+           (map str/join)
+           (map set)
+           (map count))
+     +
+     (line-seq lines))))
 
 (defn solve-2 []
-  (->> (input)
-       split-input
-       (map #(map set %))
-       (map #(apply set/intersection %))
-       (map count)
-       (apply +)))
+  (with-open [lines (utils/input-reader filename)]
+    (transduce
+     (comp (map set)
+           utils/blank-line-splitting
+           (map #(apply set/intersection %))
+           (map count))
+     +
+     (line-seq lines))))
 
 (comment
   (def input "abc
