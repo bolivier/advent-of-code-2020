@@ -6,7 +6,12 @@
 
   Typically you're going to call `line-seq` with this."
   [filename]
-  (io/reader (str "resources/" filename)))
+  (try
+    (io/reader (str "resources/" filename))
+    (catch java.io.FileNotFoundException _
+      (-> filename
+          (java.io.StringReader.)
+          (java.io.BufferedReader.)))))
 
 (def blank-line-splitting
   (comp (partition-by empty?)
@@ -32,7 +37,6 @@
              conj
              []
              input))
-
 
 (comment
   (def filename "day-6.input")
