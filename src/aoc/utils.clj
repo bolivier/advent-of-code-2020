@@ -38,6 +38,12 @@
              []
              input))
 
+(defn parse-int [^String s]
+  (try
+    (Integer/parseInt s)
+    (catch java.lang.NumberFormatException _
+      s)))
+
 (comment
   (def filename "day-6.input")
   (def input (input-reader "day-5.input"))
