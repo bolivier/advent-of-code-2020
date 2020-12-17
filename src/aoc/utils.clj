@@ -44,6 +44,9 @@
     (catch java.lang.NumberFormatException _
       s)))
 
+(defn first-where [pred coll]
+  (first (drop-while (comp not pred) coll)))
+
 (comment
   (def filename "day-6.input")
   (def input (input-reader "day-5.input"))

@@ -4,7 +4,9 @@
 
 (def initial-state {:direction "E"
                     :x 0
-                    :y 0})
+                    :y 0
+                    :waypoint {:x 10
+                               :y 1}})
 
 (defn parse-instruction [line]
   {:direction (str (first line))
@@ -21,18 +23,20 @@
                  (-> instruction :direction)))
 
 (defmethod move "N" [state {:keys [unit]}]
-  (update state :y #(+ % unit)))
+  (update-in state [:waypoint :y] #(+ % unit)))
 
 (defmethod move "S" [state {:keys [unit]}]
-  (update state :y #(- % unit)))
+  (update-in state [:waypoint :y] #(- % unit)))
 
 (defmethod move "E" [state {:keys [unit]}]
-  (update state :x #(+ % unit)))
+  (update-in state [:waypoint :x] #(+ % unit)))
 
 (defmethod move "W" [state {:keys [unit]}]
-  (update state :x #(- % unit)))
+  (update-in state [:waypoint :x] #(- % unit)))
 
 (defmethod move "F" [state {:keys [unit]}]
+  (-> state
+      (update-in state))
   (move state {:direction (:direction state)
                :unit unit}))
 
